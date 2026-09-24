@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: a3-status-demo-config
+  namespace: a3-gitops-demo
+data:
+  app-version.json: |
+    {
+      "application": "a3-status-demo",
+      "version": "v1.0.0",
+      "environment": "edge-sno-dev",
+      "status": "operational",
+      "health": "healthy"
+    }
+  server.py: |
+    import http.server
+    import socketserver
+    import os
+
+    PORT = 8080
+
+    class DemoHandler(http.server.SimpleHTTPRequestHandler):
+        def do_GET(self):
+            if self.path in ['/livez', '/readyz']:
+                self.send_response(200)
+                self.send_header('Content-type', 'text/plain')
+                self.end_headers()
+                self.wfile.write(b"OK\n")
+            elif self.path == '/':
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                with open('/app/data/app-version.json', 'rb') as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+
+    print(f"Starting A3 Status Demo server on port {PORT}...")
+    with socketserver.TCPServer(("", PORT), DemoHandler) as httpd:
+        httpd.serve_forever()

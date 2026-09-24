@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: a3-status-demo
+  namespace: a3-gitops-demo
+  labels:
+    app.kubernetes.io/name: a3-status-demo
+spec:
+  to:
+    kind: Service
+    name: a3-status-demo
+  port:
+    targetPort: http
+  tls:
+    termination: edge
