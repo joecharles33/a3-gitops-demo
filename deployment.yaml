@@ -47,11 +47,10 @@ spec:
             periodSeconds: 5
           readinessProbe:
             httpGet:
-              path: /failing-probe-nonexistent
+              path: /readyz
               port: 8080
             initialDelaySeconds: 2
-            periodSeconds: 2
-            failureThreshold: 2
+            periodSeconds: 3
           volumeMounts:
             - name: config-vol
               mountPath: /app/config

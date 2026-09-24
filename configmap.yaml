@@ -7,10 +7,10 @@ data:
   app-version.json: |
     {
       "application": "a3-status-demo",
-      "version": "v1.1.0-faulty",
+      "version": "v1.0.0",
       "environment": "edge-sno-dev",
-      "status": "failing-release",
-      "health": "unhealthy"
+      "status": "operational",
+      "health": "healthy"
     }
   server.py: |
     import http.server
